@@ -26,7 +26,7 @@ export default function ActionButtons({
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-      {/* Add to Today's Plan */}
+     
       <button
         type="button"
         onClick={() => addToPlan(workout)}
@@ -43,7 +43,7 @@ export default function ActionButtons({
           : "Add to today's plan"}
       </button>
 
-      {/* Save for Later */}
+  
       <button
         type="button"
         onClick={() => toggleSaveWorkout(workout)}

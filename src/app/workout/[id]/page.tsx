@@ -40,7 +40,7 @@ export default async function WorkoutDetailPage({
   return (
     <main className="mx-auto max-w-[1240px] px-4 py-10 sm:px-6 lg:px-0 lg:py-12">
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
-        {/* ================= LEFT: IMAGE ================= */}
+      
         <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-gray-800 bg-[#111318]">
           <Image
             src={workout.image || "/assets/banner.png"}
