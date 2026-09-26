@@ -7,6 +7,7 @@ The goal of this project was to build a highly interactive, state-driven applica
 ## 🌐 Live Demo & Repository
 
 🔗 **Live Website:** https://fitlog-iamsahedrana.vercel.app/
+
 🔗 **GitHub Repository:** https://github.com/IamSahedRana/FitLog
 
 ---
