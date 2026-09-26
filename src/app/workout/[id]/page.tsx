@@ -1,150 +1,189 @@
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 import { Workout } from "@/types";
 import ActionButtons from "./ActionButtons";
 
 async function getWorkout(id: string): Promise<Workout | null> {
   try {
-    const res = await fetch(`https://api.abcz.workers.dev/api/fitlog`, {
-      cache: "no-store",
-    });
-    if (!res.ok) return null;
-    const workouts: Workout[] = await res.json();
-    const found = workouts.find((w) => String(w.id) === String(id));
-    return found || null;
+    const res = await fetch(
+      `https://api.abcz.workers.dev/api/fitlog/${id}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!res.ok) {
+      return null;
+    }
+
+    const workout: Workout = await res.json();
+
+    return workout;
   } catch {
     return null;
   }
 }
 
-export default async function WorkoutDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = await params;
-  const workout = await getWorkout(resolvedParams.id);
+export default async function WorkoutDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
+  const workout = await getWorkout(id);
 
   if (!workout) {
     notFound();
   }
 
-  const categories = Array.isArray(workout.category)
-    ? workout.category
-    : typeof workout.category === 'string'
-    ? (workout.category as string).split(',').map((c: string) => c.trim())
-    : [];
-
-  // Generate fallback description lines if instructions aren't an array
-  const instructions = workout.description 
-    ? workout.description.split('. ').filter(Boolean)
-    : [
-        "Execute each movement with controlled form and proper posture.",
-        "Maintain core engagement throughout the entire range of motion.",
-        "Rest for 60-90 seconds between sets to maximize recovery."
-      ];
-
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Back Button */}
-      <Link 
-        href="/" 
-        className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors text-sm font-medium"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back to Library
-      </Link>
-
-      {/* Split Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-        
-        {/* Left Side: Big Image Card */}
-        <div className="relative h-[450px] md:h-[550px] w-full bg-gray-900 rounded-3xl overflow-hidden border border-gray-800">
+    <main className="mx-auto max-w-[1240px] px-4 py-10 sm:px-6 lg:px-0 lg:py-12">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
+        {/* ================= LEFT: IMAGE ================= */}
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-gray-800 bg-[#111318]">
           <Image
             src={workout.image || "/assets/banner.png"}
             alt={workout.name}
             fill
-            className="object-cover"
             priority
+            className="object-cover"
+            sizes="(max-width: 1024px) 100vw, 50vw"
           />
         </div>
 
-        {/* Right Side: Details & Actions */}
-        <div className="flex flex-col justify-between">
-          <div>
-            {/* Title */}
-            <h1 className="font-display text-3xl md:text-4xl font-bold text-white uppercase mb-3">
-              {workout.name}
-            </h1>
+        {/* ================= RIGHT: CONTENT ================= */}
+        <div className="flex flex-col">
+          {/* Title */}
+          <h1 className="font-display text-[32px] font-bold uppercase leading-[1.05] tracking-tight text-white sm:text-[38px]">
+            {workout.name}
+          </h1>
 
-            {/* Description Subtitle */}
-            <p className="text-gray-400 text-sm mb-4 leading-relaxed">
-              {workout.description || "A dynamic compound movement designed to build strength and overall power."}
-            </p>
+          {/* Description */}
+          <p className="mt-3 max-w-[590px] text-[15px] leading-[1.55] text-gray-400">
+            {workout.description}
+          </p>
 
-            {/* Category Pills */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {categories.map((cat: string, index: number) => (
-                <span 
-                  key={index} 
-                  className="px-3.5 py-1 bg-[var(--color-brand)] text-black text-xs font-bold uppercase rounded-full tracking-wider"
-                >
-                  {cat}
-                </span>
-              ))}
+          {/* Muscle Groups */}
+          <div className="mt-5 flex flex-wrap gap-2">
+            {workout.muscleGroups?.map((muscle, index) => (
+              <span
+                key={index}
+                className="rounded-full bg-[var(--color-brand)] px-4 py-1 text-[12px] font-bold text-black"
+              >
+                {muscle}
+              </span>
+            ))}
+          </div>
+
+          {/* ================= STATS ================= */}
+          <div className="mt-7 overflow-hidden rounded-2xl border border-gray-800 bg-[#15181f]">
+            {/* Equipment */}
+            <div className="flex min-h-[49px] items-center justify-between border-b border-gray-800 px-6">
+              <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
+                Equipment
+              </span>
+
+              <span className="text-[14px] text-gray-200">
+                {workout.equipment}
+              </span>
             </div>
 
-            {/* Stats Table / Box matching screenshot */}
-            <div className="bg-[#111318] rounded-2xl border border-gray-800/80 divide-y divide-gray-800/60 mb-8 text-sm">
-              <div className="flex justify-between px-5 py-3.5 text-gray-400">
-                <span>EQUIPMENT</span>
-                <span className="text-white font-medium">{workout.equipment || "Barbell, Bench"}</span>
-              </div>
-              <div className="flex justify-between px-5 py-3.5 text-gray-400">
-                <span>DIFFICULTY</span>
-                <span className="text-white font-medium">Intermediate</span>
-              </div>
-              <div className="flex justify-between px-5 py-3.5 text-gray-400">
-                <span>SETS</span>
-                <span className="text-white font-medium">4</span>
-              </div>
-              <div className="flex justify-between px-5 py-3.5 text-gray-400">
-                <span>REPS</span>
-                <span className="text-white font-medium">6-8</span>
-              </div>
-              <div className="flex justify-between px-5 py-3.5 text-gray-400">
-                <span>DURATION</span>
-                <span className="text-white font-medium">{workout.duration} min</span>
-              </div>
-              <div className="flex justify-between px-5 py-3.5 text-gray-400">
-                <span>CALORIES</span>
-                <span className="text-white font-medium">{workout.calories} kcal</span>
-              </div>
-              <div className="flex justify-between px-5 py-3.5 text-gray-400">
-                <span>RATING</span>
-                <span className="text-white font-medium">{workout.rating}</span>
-              </div>
+            {/* Difficulty */}
+            <div className="flex min-h-[49px] items-center justify-between border-b border-gray-800 px-6">
+              <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
+                Difficulty
+              </span>
+
+              <span className="text-[14px] text-gray-200">
+                {workout.difficulty}
+              </span>
             </div>
 
-            {/* Instructions Section */}
-            <div className="mb-8">
-              <h3 className="font-display text-sm font-bold text-white uppercase tracking-wider mb-4">
-                INSTRUCTIONS
-              </h3>
-              <ol className="space-y-2.5 text-gray-400 text-sm">
-                {instructions.map((step, idx) => (
-                  <li key={idx} className="flex gap-3">
-                    <span className="text-gray-500 font-mono">{idx + 1}.</span>
-                    <span>{step.endsWith('.') ? step : `${step}.`}</span>
-                  </li>
-                ))}
-              </ol>
+            {/* Sets */}
+            <div className="flex min-h-[49px] items-center justify-between border-b border-gray-800 px-6">
+              <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
+                Sets
+              </span>
+
+              <span className="text-[14px] text-gray-200">
+                {workout.sets}
+              </span>
+            </div>
+
+            {/* Reps */}
+            <div className="flex min-h-[49px] items-center justify-between border-b border-gray-800 px-6">
+              <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
+                Reps
+              </span>
+
+              <span className="text-[14px] text-gray-200">
+                {workout.reps}
+              </span>
+            </div>
+
+            {/* Duration */}
+            <div className="flex min-h-[49px] items-center justify-between border-b border-gray-800 px-6">
+              <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
+                Duration
+              </span>
+
+              <span className="text-[14px] text-gray-200">
+                {workout.duration} min
+              </span>
+            </div>
+
+            {/* Calories */}
+            <div className="flex min-h-[49px] items-center justify-between border-b border-gray-800 px-6">
+              <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
+                Calories
+              </span>
+
+              <span className="text-[14px] text-gray-200">
+                {workout.caloriesBurned} kcal
+              </span>
+            </div>
+
+            {/* Rating */}
+            <div className="flex min-h-[49px] items-center justify-between px-6">
+              <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
+                Rating
+              </span>
+
+              <span className="text-[14px] text-gray-200">
+                {workout.rating}
+              </span>
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <ActionButtons workout={workout} />
-          
+          {/* ================= INSTRUCTIONS ================= */}
+          <div className="mt-8">
+            <h2 className="font-display text-[17px] font-bold uppercase text-white">
+              Instructions
+            </h2>
+
+            <ol className="mt-4 space-y-3">
+              {workout.instructions?.map((instruction, index) => (
+                <li
+                  key={index}
+                  className="flex gap-3 text-[14px] leading-[1.45] text-gray-300"
+                >
+                  <span className="shrink-0 text-gray-400">
+                    {index + 1}.
+                  </span>
+
+                  <span>{instruction}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          {/* ================= ACTION BUTTONS ================= */}
+          <div className="mt-9">
+            <ActionButtons workout={workout} />
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

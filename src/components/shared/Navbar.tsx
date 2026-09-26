@@ -8,69 +8,103 @@ import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { todaysPlan, savedWorkouts } = useFitlogStore();
-  const [isMounted, setIsMounted] = useState(false);
+
+  const { todaysPlan, savedWorkouts } =
+    useFitlogStore();
+
+  const [isMounted, setIsMounted] =
+    useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsMounted(true), 0);
-    return () => clearTimeout(timer);
+    setIsMounted(true);
   }, []);
 
+  const planCount = isMounted
+    ? todaysPlan.length
+    : 0;
+
+  const savedCount = isMounted
+    ? savedWorkouts.length
+    : 0;
+
   return (
-    <nav className="border-b border-gray-800 bg-[var(--color-dark)] sticky top-0 z-50" suppressHydrationWarning>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
-        <div className="flex items-center justify-between h-20" suppressHydrationWarning>
-          
-          {/* Left: Logo - FIXED AREA */}
-          <Link href="/" className="flex items-center gap-3">
-            <Image 
-              src="/assets/logo.png" 
-              alt="FitLog Logo" 
-              width={140} 
-              height={40} 
-              className="w-auto h-10 object-contain" 
+    <nav className="sticky top-0 z-50 border-b border-gray-800 bg-[var(--color-dark)]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-[72px] items-center justify-between gap-4">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="flex shrink-0 items-center gap-2"
+          >
+            <Image
+              src="/assets/logo.png"
+              alt="FitLog Logo"
+              width={34}
+              height={34}
+              className="h-8 w-8 object-contain"
               priority
             />
-            {/* Added this line back in! */}
-            <span className="font-display text-2xl font-bold tracking-wider text-white">FITLOG</span>
+
+            <span className="font-display text-xl font-bold tracking-wide text-white sm:text-2xl">
+              FITLOG
+            </span>
           </Link>
-          
-          {/* Middle: Links */}
-          <div className="hidden sm:flex items-center gap-2 bg-gray-900/50 p-1 rounded-full border border-gray-800">
+
+          {/* Navigation */}
+          <div className="hidden items-center gap-1 rounded-full border border-gray-800 bg-gray-900/50 p-1 sm:flex">
             <Link
               href="/"
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
-                pathname === "/" ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white"
+              className={`rounded-full px-6 py-2 text-sm font-medium transition-colors ${
+                pathname === "/"
+                  ? "bg-gray-800 text-white"
+                  : "text-gray-400 hover:text-white"
               }`}
             >
               Workouts
             </Link>
+
             <Link
               href="/my-plan"
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
-                pathname === "/my-plan" ? "bg-gray-800 text-[var(--color-brand)]" : "text-gray-400 hover:text-white"
+              className={`rounded-full px-6 py-2 text-sm font-medium transition-colors ${
+                pathname === "/my-plan"
+                  ? "bg-gray-800 text-[var(--color-brand)]"
+                  : "text-gray-400 hover:text-white"
               }`}
             >
               My Plan
             </Link>
           </div>
 
-          {/* Right: Badges */}
-          <div className="flex items-center gap-6">
-            <Link href="/my-plan" className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors">
+          {/* Counters */}
+          <div className="flex items-center gap-3 sm:gap-6">
+            <Link
+              href="/my-plan"
+              className="flex items-center gap-1.5 text-xs text-gray-300 transition-colors hover:text-white sm:text-sm"
+            >
               Plan
-              <span className="bg-[var(--color-brand)] text-black font-bold h-6 w-6 rounded-full flex items-center justify-center text-xs">
-                {isMounted ? todaysPlan.length : 0}
+
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-brand)] text-xs font-bold text-black">
+                {planCount}
               </span>
             </Link>
-            <Link href="/my-plan" className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors">
+
+            <Link
+              href="/my-plan"
+              className="flex items-center gap-1.5 text-xs text-gray-300 transition-colors hover:text-white sm:text-sm"
+            >
               Saved
-              <span className="border border-gray-600 text-gray-300 font-bold h-6 w-6 rounded-full flex items-center justify-center text-xs">
-                {isMounted ? savedWorkouts.length : 0}
+
+              <span
+                className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
+                  savedCount > 0
+                    ? "border border-gray-500 text-gray-200"
+                    : "border border-gray-600 text-gray-400"
+                }`}
+              >
+                {savedCount}
               </span>
             </Link>
           </div>
-
         </div>
       </div>
     </nav>

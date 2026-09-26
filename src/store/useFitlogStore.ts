@@ -1,16 +1,22 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { Workout } from '@/types';
-import { toast } from 'react-toastify';
+"use client";
+
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { Workout } from "@/types";
+import { toast } from "react-toastify";
 
 interface FitlogState {
   todaysPlan: Workout[];
   savedWorkouts: Workout[];
+
   addToPlan: (workout: Workout) => void;
-  removeFromPlan: (id: string) => void;
+  removeFromPlan: (id: number) => void;
+
   saveForLater: (workout: Workout) => void;
-  removeFromSaved: (id: string) => void;
-  markAsDone: (id: string) => void;
+  removeFromSaved: (id: number) => void;
+  toggleSaveWorkout: (workout: Workout) => void;
+
+  markAsDone: (id: number) => void;
 }
 
 export const useFitlogStore = create<FitlogState>()(
@@ -19,47 +25,175 @@ export const useFitlogStore = create<FitlogState>()(
       todaysPlan: [],
       savedWorkouts: [],
 
+      /* =========================
+         ADD TO TODAY'S PLAN
+      ========================= */
       addToPlan: (workout) => {
         const currentPlan = get().todaysPlan;
+
         if (currentPlan.length >= 5) {
-          toast.error("You've reached the cap of 5 lifts for today!");
+          toast.error("You've reached the cap of 5 lifts for today!", {
+            toastId: "plan-limit",
+          });
           return;
         }
-        if (currentPlan.find(w => w.id === workout.id)) {
-          toast.info("Already in today's plan!");
+
+        const alreadyExists = currentPlan.some(
+          (item) => item.id === workout.id
+        );
+
+        if (alreadyExists) {
+          toast.info("This workout is already in your plan!", {
+            toastId: `already-in-plan-${workout.id}`,
+          });
           return;
         }
-        set({ todaysPlan: [...currentPlan, workout] });
-        toast.success("Added to today's plan");
+
+        set({
+          todaysPlan: [...currentPlan, workout],
+        });
+
+        toast.success("Added to today's plan!", {
+          toastId: `added-plan-${workout.id}`,
+        });
       },
 
+      /* =========================
+         REMOVE FROM PLAN
+      ========================= */
       removeFromPlan: (id) => {
-        set({ todaysPlan: get().todaysPlan.filter(w => w.id !== id) });
-        toast.info("Removed from plan");
+        const currentPlan = get().todaysPlan;
+
+        const workoutExists = currentPlan.some(
+          (workout) => workout.id === id
+        );
+
+        if (!workoutExists) {
+          return;
+        }
+
+        set({
+          todaysPlan: currentPlan.filter(
+            (workout) => workout.id !== id
+          ),
+        });
+
+        toast.info("Removed from today's plan.", {
+          toastId: `removed-plan-${id}`,
+        });
       },
 
+      /* =========================
+         SAVE FOR LATER
+      ========================= */
       saveForLater: (workout) => {
         const saved = get().savedWorkouts;
-        if (saved.find(w => w.id === workout.id)) {
-          toast.info("Already saved for later!");
+
+        const alreadySaved = saved.some(
+          (item) => item.id === workout.id
+        );
+
+        if (alreadySaved) {
+          toast.info("This workout is already saved!", {
+            toastId: `already-saved-${workout.id}`,
+          });
           return;
         }
-        set({ savedWorkouts: [...saved, workout] });
-        toast.success("Saved for later");
+
+        set({
+          savedWorkouts: [...saved, workout],
+        });
+
+        toast.success("Workout saved successfully!", {
+          toastId: `saved-${workout.id}`,
+        });
       },
 
+      /* =========================
+         REMOVE FROM SAVED
+      ========================= */
       removeFromSaved: (id) => {
-        set({ savedWorkouts: get().savedWorkouts.filter(w => w.id !== id) });
+        const saved = get().savedWorkouts;
+
+        const workoutExists = saved.some(
+          (workout) => workout.id === id
+        );
+
+        if (!workoutExists) {
+          return;
+        }
+
+        set({
+          savedWorkouts: saved.filter(
+            (workout) => workout.id !== id
+          ),
+        });
+
+        toast.info("Removed from saved workouts.", {
+          toastId: `removed-saved-${id}`,
+        });
       },
 
+      /* =========================
+         TOGGLE SAVE
+      ========================= */
+      toggleSaveWorkout: (workout) => {
+        const saved = get().savedWorkouts;
+
+        const isSaved = saved.some(
+          (item) => item.id === workout.id
+        );
+
+        if (isSaved) {
+          set({
+            savedWorkouts: saved.filter(
+              (item) => item.id !== workout.id
+            ),
+          });
+
+          toast.info("Removed from saved workouts.", {
+            toastId: `removed-saved-${workout.id}`,
+          });
+
+          return;
+        }
+
+        set({
+          savedWorkouts: [...saved, workout],
+        });
+
+        toast.success("Workout saved successfully!", {
+          toastId: `saved-${workout.id}`,
+        });
+      },
+
+      /* =========================
+         MARK AS DONE
+      ========================= */
       markAsDone: (id) => {
-        // You can expand this to move it to a 'completed' list if you want
-        get().removeFromPlan(id);
-        toast.success("Great job! Workout completed.");
-      }
+        const currentPlan = get().todaysPlan;
+
+        const workoutExists = currentPlan.some(
+          (workout) => workout.id === id
+        );
+
+        if (!workoutExists) {
+          return;
+        }
+
+        set({
+          todaysPlan: currentPlan.filter(
+            (workout) => workout.id !== id
+          ),
+        });
+
+        toast.success("Great job! Workout completed.", {
+          toastId: `completed-${id}`,
+        });
+      },
     }),
     {
-      name: 'fitlog-storage', // name of the item in local storage
+      name: "fitlog-storage",
     }
   )
 );

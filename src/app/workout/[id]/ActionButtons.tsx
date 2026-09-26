@@ -2,51 +2,66 @@
 
 import { Workout } from "@/types";
 import { useFitlogStore } from "@/store/useFitlogStore";
-import { Bookmark, Plus } from "lucide-react";
-import { toast } from "react-toastify";
+import { Bookmark, CalendarPlus } from "lucide-react";
 
-export default function ActionButtons({ workout }: { workout: Workout }) {
-  const { addToPlan, toggleSaveWorkout, savedWorkouts, todaysPlan } = useFitlogStore();
+export default function ActionButtons({
+  workout,
+}: {
+  workout: Workout;
+}) {
+  const {
+    addToPlan,
+    toggleSaveWorkout,
+    savedWorkouts,
+    todaysPlan,
+  } = useFitlogStore();
 
-  const isSaved = savedWorkouts.some((w) => w.id === workout.id);
-  const isInPlan = todaysPlan.some((w) => w.id === workout.id);
+  const isSaved = savedWorkouts.some(
+    (item) => item.id === workout.id
+  );
 
-  const handleAddToPlan = () => {
-    if (isInPlan) {
-      toast.info("This workout is already in your plan!");
-      return;
-    }
-    addToPlan(workout);
-    toast.success("Added to today's plan!");
-  };
-
-  const handleToggleSave = () => {
-    toggleSaveWorkout(workout);
-    if (isSaved) {
-      toast.info("Removed from saved workouts.");
-    } else {
-      toast.success("Workout saved successfully!");
-    }
-  };
+  const isInPlan = todaysPlan.some(
+    (item) => item.id === workout.id
+  );
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+      {/* Add to Today's Plan */}
       <button
-        onClick={handleAddToPlan}
-        className="w-full sm:flex-1 bg-[var(--color-brand)] text-black font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 hover:bg-[#b3e600] transition-colors shadow-lg"
-      >
-        <Plus className="w-5 h-5" />
-        {isInPlan ? "In Today's Plan" : "Add to Plan"}
-      </button>
-
-      <button
-        onClick={handleToggleSave}
-        className={`w-full sm:w-auto border border-gray-700 py-4 px-8 rounded-full font-bold flex items-center justify-center gap-2 transition-colors ${
-          isSaved ? "bg-gray-800 text-[var(--color-brand)]" : "text-gray-300 hover:text-white hover:border-gray-500"
+        type="button"
+        onClick={() => addToPlan(workout)}
+        className={`inline-flex h-[46px] items-center justify-center gap-2 rounded-xl px-6 text-sm font-semibold transition-all ${
+          isInPlan
+            ? "cursor-pointer bg-[var(--color-brand)] text-black"
+            : "bg-[var(--color-brand)] text-black hover:opacity-90"
         }`}
       >
-        <Bookmark className={`w-5 h-5 ${isSaved ? "fill-[var(--color-brand)]" : ""}`} />
-        {isSaved ? "Saved" : "Save Workout"}
+        <CalendarPlus className="h-[17px] w-[17px]" />
+
+        {isInPlan
+          ? "In today's plan"
+          : "Add to today's plan"}
+      </button>
+
+      {/* Save for Later */}
+      <button
+        type="button"
+        onClick={() => toggleSaveWorkout(workout)}
+        className={`inline-flex h-[46px] items-center justify-center gap-2 rounded-xl border px-6 text-sm font-medium transition-all ${
+          isSaved
+            ? "border-[var(--color-brand)] bg-[#15181f] text-[var(--color-brand)]"
+            : "border-gray-700 bg-transparent text-gray-300 hover:border-gray-500 hover:text-white"
+        }`}
+      >
+        <Bookmark
+          className={`h-[17px] w-[17px] ${
+            isSaved
+              ? "fill-[var(--color-brand)]"
+              : ""
+          }`}
+        />
+
+        {isSaved ? "Saved" : "Save for later"}
       </button>
     </div>
   );
