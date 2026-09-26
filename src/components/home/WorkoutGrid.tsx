@@ -3,7 +3,7 @@ import WorkoutCard from "../cards/WorkoutCard";
 
 async function fetchWorkouts(): Promise<Workout[]> {
   const res = await fetch("https://api.abcz.workers.dev/api/fitlog", {
-    cache: "no-store", // Ensures the loading.tsx animation fires while fetching
+    cache: "no-store",
   });
   
   if (!res.ok) {
@@ -28,8 +28,8 @@ export default async function WorkoutGrid() {
         </p>
       </div>
       
-      {/* 3x4 Responsive Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {/* 3 cards in a row on desktop */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {workouts.map((workout) => (
           <WorkoutCard key={workout.id} workout={workout} />
         ))}

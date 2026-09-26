@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Dumbbell } from "lucide-react";
 import { useFitlogStore } from "@/store/useFitlogStore";
 import { useEffect, useState } from "react";
 
@@ -12,20 +12,29 @@ export default function Navbar() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    const timer = setTimeout(() => setIsMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
-    <nav className="border-b border-gray-800 bg-[var(--color-dark)] sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+    <nav className="border-b border-gray-800 bg-[var(--color-dark)] sticky top-0 z-50" suppressHydrationWarning>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
+        <div className="flex items-center justify-between h-20" suppressHydrationWarning>
           
-          {/* Left: Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <Dumbbell className="h-8 w-8 text-[var(--color-brand)] transform -rotate-45" />
+          {/* Left: Logo - FIXED AREA */}
+          <Link href="/" className="flex items-center gap-3">
+            <Image 
+              src="/assets/logo.png" 
+              alt="FitLog Logo" 
+              width={140} 
+              height={40} 
+              className="w-auto h-10 object-contain" 
+              priority
+            />
+            {/* Added this line back in! */}
             <span className="font-display text-2xl font-bold tracking-wider text-white">FITLOG</span>
           </Link>
-
+          
           {/* Middle: Links */}
           <div className="hidden sm:flex items-center gap-2 bg-gray-900/50 p-1 rounded-full border border-gray-800">
             <Link
