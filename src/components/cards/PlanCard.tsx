@@ -41,7 +41,7 @@ export default function PlanCard({
   return (
     <article className="rounded-2xl border border-gray-800 bg-[#191c22] p-4 transition-colors hover:border-gray-700">
       <div className="flex flex-col gap-5 md:flex-row md:items-center">
-        {/* Image */}
+      
         <div className="relative h-24 w-full shrink-0 overflow-hidden rounded-xl md:h-24 md:w-36">
           <Image
             src={workout.image || "/assets/banner.png"}
@@ -52,7 +52,7 @@ export default function PlanCard({
           />
         </div>
 
-        {/* Information */}
+     
         <div className="min-w-0 flex-1">
           <h3 className="font-display text-xl font-bold uppercase leading-tight text-white">
             {workout.name}
@@ -62,7 +62,6 @@ export default function PlanCard({
             {workout.equipment}
           </p>
 
-          {/* Stats */}
           <div className="mt-3 flex flex-wrap items-center gap-4 text-sm">
             <span className="flex items-center gap-1.5 text-gray-300">
               <Clock3 className="h-4 w-4 text-[var(--color-brand)]" />
@@ -81,7 +80,6 @@ export default function PlanCard({
           </div>
         </div>
 
-        {/* Actions */}
         <div className="flex shrink-0 items-center gap-2">
           <Link
             href={`/workout/${workout.id}`}
@@ -90,7 +88,6 @@ export default function PlanCard({
             View Details
           </Link>
 
-          {/* Mark as Done */}
           {showDoneButton && !savedView && (
             <button
               type="button"
@@ -102,7 +99,7 @@ export default function PlanCard({
             </button>
           )}
 
-          {/* Remove */}
+        
           <button
             type="button"
             onClick={handleRemove}
