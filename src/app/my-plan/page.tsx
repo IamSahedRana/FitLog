@@ -76,7 +76,7 @@ export default function MyPlanPage() {
 
   return (
     <main className="mx-auto max-w-[1120px] px-4 py-10 sm:px-6 lg:py-12">
-      {/* ================= HEADER ================= */}
+     
       <section>
         <h1 className="font-display text-4xl font-medium uppercase tracking-tight text-white sm:text-5xl">
           My Plan
@@ -88,7 +88,7 @@ export default function MyPlanPage() {
         </p>
       </section>
 
-      {/* ================= STATS ================= */}
+     
       <section className="mt-9 overflow-hidden rounded-2xl border border-gray-800 bg-[#191c22]">
         <div className="grid grid-cols-1 sm:grid-cols-3">
           {/* Exercises */}
@@ -102,7 +102,7 @@ export default function MyPlanPage() {
             </p>
           </div>
 
-          {/* Minutes */}
+       
           <div className="border-b border-gray-800 px-6 py-5 sm:border-b-0 sm:border-r">
             <p className="text-sm text-gray-400">
               Minutes
@@ -113,7 +113,7 @@ export default function MyPlanPage() {
             </p>
           </div>
 
-          {/* Calories */}
+ 
           <div className="px-6 py-5">
             <p className="text-sm text-gray-400">
               Calories
@@ -126,9 +126,9 @@ export default function MyPlanPage() {
         </div>
       </section>
 
-      {/* ================= CONTROLS ================= */}
+   
       <section className="mt-9 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-        {/* Tabs */}
+       
         <div className="inline-flex w-fit rounded-2xl bg-[#191c22] p-1">
           <button
             type="button"
@@ -139,7 +139,7 @@ export default function MyPlanPage() {
                 : "text-gray-400 hover:text-white"
             }`}
           >
-            Today's Plan
+            Today`&apos;s Plan
           </button>
 
           <button
@@ -155,7 +155,7 @@ export default function MyPlanPage() {
           </button>
         </div>
 
-        {/* Sort */}
+     
         <div className="w-full sm:w-[325px]">
           <label
             htmlFor="sort"
@@ -198,7 +198,7 @@ export default function MyPlanPage() {
         </div>
       </section>
 
-      {/* ================= WORKOUT LIST ================= */}
+    
       <section className="mt-8 space-y-4">
         {currentWorkouts.length > 0 ? (
           currentWorkouts.map((workout) => (
@@ -217,7 +217,7 @@ export default function MyPlanPage() {
   );
 }
 
-/* ================= EMPTY STATE ================= */
+
 
 function EmptyState({
   activeTab,
