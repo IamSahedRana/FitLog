@@ -6,7 +6,7 @@ export default function Hero() {
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
       <div className="bg-[#1a1a1a] rounded-3xl p-8 md:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-12">
         
-        {/* Left Side: Content */}
+    
         <div className="max-w-xl w-full">
           <p className="text-[var(--color-brand)] text-xs md:text-sm font-bold uppercase tracking-wider mb-4">
             WORKOUT LIBRARY
@@ -25,7 +25,7 @@ export default function Hero() {
           </Link>
         </div>
         
-        {/* Right Side: Image */}
+       
         <div className="relative w-full max-w-lg h-[350px] md:h-[450px]">
           <Image 
             src="/assets/banner.png" 
