@@ -52,19 +52,19 @@ export default async function WorkoutDetailPage({
           />
         </div>
 
-        {/* ================= RIGHT: CONTENT ================= */}
+      
         <div className="flex flex-col">
-          {/* Title */}
+        
           <h1 className="font-display text-[32px] font-bold uppercase leading-[1.05] tracking-tight text-white sm:text-[38px]">
             {workout.name}
           </h1>
 
-          {/* Description */}
+       
           <p className="mt-3 max-w-[590px] text-[15px] leading-[1.55] text-gray-400">
             {workout.description}
           </p>
 
-          {/* Muscle Groups */}
+        
           <div className="mt-5 flex flex-wrap gap-2">
             {workout.muscleGroups?.map((muscle, index) => (
               <span
@@ -76,9 +76,9 @@ export default async function WorkoutDetailPage({
             ))}
           </div>
 
-          {/* ================= STATS ================= */}
+        
           <div className="mt-7 overflow-hidden rounded-2xl border border-gray-800 bg-[#15181f]">
-            {/* Equipment */}
+        
             <div className="flex min-h-[49px] items-center justify-between border-b border-gray-800 px-6">
               <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
                 Equipment
@@ -89,7 +89,7 @@ export default async function WorkoutDetailPage({
               </span>
             </div>
 
-            {/* Difficulty */}
+      
             <div className="flex min-h-[49px] items-center justify-between border-b border-gray-800 px-6">
               <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
                 Difficulty
@@ -100,7 +100,7 @@ export default async function WorkoutDetailPage({
               </span>
             </div>
 
-            {/* Sets */}
+    
             <div className="flex min-h-[49px] items-center justify-between border-b border-gray-800 px-6">
               <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
                 Sets
@@ -111,7 +111,7 @@ export default async function WorkoutDetailPage({
               </span>
             </div>
 
-            {/* Reps */}
+      
             <div className="flex min-h-[49px] items-center justify-between border-b border-gray-800 px-6">
               <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
                 Reps
@@ -122,7 +122,7 @@ export default async function WorkoutDetailPage({
               </span>
             </div>
 
-            {/* Duration */}
+          
             <div className="flex min-h-[49px] items-center justify-between border-b border-gray-800 px-6">
               <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
                 Duration
@@ -133,7 +133,7 @@ export default async function WorkoutDetailPage({
               </span>
             </div>
 
-            {/* Calories */}
+      
             <div className="flex min-h-[49px] items-center justify-between border-b border-gray-800 px-6">
               <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
                 Calories
@@ -144,7 +144,7 @@ export default async function WorkoutDetailPage({
               </span>
             </div>
 
-            {/* Rating */}
+        
             <div className="flex min-h-[49px] items-center justify-between px-6">
               <span className="text-[12px] font-bold uppercase tracking-wider text-gray-400">
                 Rating
@@ -156,7 +156,7 @@ export default async function WorkoutDetailPage({
             </div>
           </div>
 
-          {/* ================= INSTRUCTIONS ================= */}
+       
           <div className="mt-8">
             <h2 className="font-display text-[17px] font-bold uppercase text-white">
               Instructions
@@ -178,7 +178,7 @@ export default async function WorkoutDetailPage({
             </ol>
           </div>
 
-          {/* ================= ACTION BUTTONS ================= */}
+        
           <div className="mt-9">
             <ActionButtons workout={workout} />
           </div>
