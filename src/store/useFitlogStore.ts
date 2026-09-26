@@ -25,9 +25,7 @@ export const useFitlogStore = create<FitlogState>()(
       todaysPlan: [],
       savedWorkouts: [],
 
-      /* =========================
-         ADD TO TODAY'S PLAN
-      ========================= */
+      
       addToPlan: (workout) => {
         const currentPlan = get().todaysPlan;
 
@@ -58,9 +56,7 @@ export const useFitlogStore = create<FitlogState>()(
         });
       },
 
-      /* =========================
-         REMOVE FROM PLAN
-      ========================= */
+  
       removeFromPlan: (id) => {
         const currentPlan = get().todaysPlan;
 
@@ -83,9 +79,7 @@ export const useFitlogStore = create<FitlogState>()(
         });
       },
 
-      /* =========================
-         SAVE FOR LATER
-      ========================= */
+      
       saveForLater: (workout) => {
         const saved = get().savedWorkouts;
 
@@ -109,9 +103,6 @@ export const useFitlogStore = create<FitlogState>()(
         });
       },
 
-      /* =========================
-         REMOVE FROM SAVED
-      ========================= */
       removeFromSaved: (id) => {
         const saved = get().savedWorkouts;
 
@@ -134,9 +125,7 @@ export const useFitlogStore = create<FitlogState>()(
         });
       },
 
-      /* =========================
-         TOGGLE SAVE
-      ========================= */
+    
       toggleSaveWorkout: (workout) => {
         const saved = get().savedWorkouts;
 
@@ -167,9 +156,7 @@ export const useFitlogStore = create<FitlogState>()(
         });
       },
 
-      /* =========================
-         MARK AS DONE
-      ========================= */
+     
       markAsDone: (id) => {
         const currentPlan = get().todaysPlan;
 
