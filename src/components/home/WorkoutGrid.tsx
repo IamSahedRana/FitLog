@@ -18,7 +18,7 @@ export default async function WorkoutGrid() {
 
   return (
     <section id="library" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
-      {/* Section Header */}
+   
       <div className="mb-10">
         <h2 className="font-display text-4xl md:text-5xl font-bold text-white uppercase mb-2">
           The Library
@@ -28,7 +28,7 @@ export default async function WorkoutGrid() {
         </p>
       </div>
       
-      {/* 3 cards in a row on desktop */}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {workouts.map((workout) => (
           <WorkoutCard key={workout.id} workout={workout} />
